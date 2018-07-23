@@ -2,6 +2,7 @@ package com.drip.minio.service;
 
 import com.drip.minio.util.FileFormatUtil;
 import com.drip.minio.util.PropertyConfigUtil;
+import com.google.common.base.Strings;
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import org.xmlpull.v1.XmlPullParserException;
@@ -115,12 +116,17 @@ public class MinioTemplate {
     public void deleteFile(String bucketName,String fileName) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidArgumentException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
         MinioClient client = getMinioClient();
         String name = FileFormatUtil.getFileRelativePathForDelete(bucketName,fileName);
-        client.removeObject(bucketName,name);
+        if(!Strings.isNullOrEmpty(name)){
+            client.removeObject(bucketName,name);
+        }
     }
 
     public InputStream getFile(String bucketName,String fileName) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidArgumentException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
         MinioClient client = getMinioClient();
         String name = FileFormatUtil.getFileRelativePathForDelete(bucketName,fileName);
-        return client.getObject(bucketName,name);
+        if(!Strings.isNullOrEmpty(name)){
+            return client.getObject(bucketName,name);
+        }
+        return null;
     }
 }

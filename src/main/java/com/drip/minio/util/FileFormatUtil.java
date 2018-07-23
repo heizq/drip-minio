@@ -56,7 +56,10 @@ public class FileFormatUtil {
 
     public static String getFileRelativePathForDelete(String bucketName,String path){
         int length = bucketName.length();
-        return path.substring(length + 2);
+        if(path.length() >= (length + 2)){
+            return path.substring(length + 2);
+        }
+        return "";
     }
 
     public static String getFileNameFromPath(String path){
